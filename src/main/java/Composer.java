@@ -2,7 +2,7 @@
 import java.util.*;
 import org.jfugue.player.Player;
 
-public class Comp {
+public class Composer {
     static String text = "ciao mamma guarda";
     static String vocal = "aeiou";
     static String word = "ABCDEFG";

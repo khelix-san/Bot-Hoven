@@ -8,11 +8,23 @@
     <artifactId>musibot</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots</artifactId>
             <version>6.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.JensPiegsa</groupId>
+            <artifactId>jfugue</artifactId>
+            <version>5.0.9</version>
         </dependency>
     </dependencies>
 
