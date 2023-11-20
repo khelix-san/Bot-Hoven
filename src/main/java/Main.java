@@ -58,9 +58,43 @@ public class Main {
             else if(update.hasCallbackQuery()){
                 CallbackQuery cbQuery = update.getCallbackQuery();
                 String data = cbQuery.getData();
+                long id = cbQuery.getMessage().getChatId();
                 print(data);
+
+                char option = data.split(":")[0].charAt(0);
+                InlineKeyboardMarkup ikm= new InlineKeyboardMarkup();
+
                 SendMessage send = new SendMessage();
-                send.setChatId(cbQuery.getMessage().getChatId());
+
+                switch (option){
+                    case 'm':
+                        ikm.setKeyboard(/*funz*/); //funzione che accetta come parametro il numero affiancato alla lettera e crea il sottomenù corrispettivo
+                        //es m:1 ti porta al menù dei generi
+                        send.setText("");
+                        break;
+                    case 'i':
+                        ikm.setKeyboard(/*funz*/);
+                        send.setText("");
+                        break;
+                    case 'g':
+                        ikm.setKeyboard(/*funz*/);
+                        send.setText("");
+                        break;
+                    case 'a':
+                        ikm.setKeyboard(/*funz*/);
+                        send.setText("");
+                        break;
+                    case 'r'://return e richiama mainMenu()
+                        ikm.setKeyboard(mainMenu());
+                        send.setText("Choose an operation:");
+                        break;
+                }
+
+
+                send.setChatId(id);
+                send.setReplyMarkup(ikm);
+
+                send.setChatId(id);
                 send.setText("PRESS- "+data);
 
                 try{
