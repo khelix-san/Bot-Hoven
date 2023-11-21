@@ -89,39 +89,43 @@ public class Main {
                                 ikm.setKeyboard(Genre());
                                 send.setText("Choose the music genre you prefer :");
                             } else if (type == 'i') {
-
+                                ikm.setKeyboard(mainMenu());
+                                send.setText("Set the guitar instrument, continue to customize the composer or press the \"Start\" button to start playing!");
                             } else if (type == 'g') {
-
+                                ikm.setKeyboard(mainMenu());
+                                send.setText("Set the rock genre, continue to customize the composer or press the \"Start\" button to start playing!");
                             }else{
-
+                                //tempo musicale personalizzato
                             }
                             break;
                         case '2':
-                            ikm.setKeyboard(AdSettings());
-                            send.setText("Are you a real expert? \n" +
-                                    "Well have fun customizing to the best of your ability!");
+                            if (type == 'm'){
+                                ikm.setKeyboard(AdSettings());
+                                send.setText("Are you a real expert? \n" + "Well have fun customizing to the best of your ability!");
+                            } else if (type == 'i') {
+                                ikm.setKeyboard(mainMenu());
+                                send.setText("Set the flute instrument, continue to customize the composer or press the \"Start\" button to start playing!");
+                            } else if (type == 'g') {
+                                ikm.setKeyboard(mainMenu());
+                                send.setText("Ready to play? Press the \"Start\" button and let's get the dancing started!");
+                            }else{
+                                //custom pattern like "aeiou"
+                            }
                             break;
-                        case '3'://dovrebbe essere lo start
-                            //ikm.setKeyboard(/*funz*/);
-                            send.setText("Are you a real expert? \n" +
-                                    "Well have fun customizing to the best of your ability!");
-                            break;
-                        case '4'://return e richiama mainMenu()
-                            ikm.setKeyboard(mainMenu());
-                            send.setText("Ready to get started?\n" +
-                                    "Hit the \"Start\" button and enter your phrase, otherwise continue to customize your result!");
+                        case '3':
+                            if( type == 'm'){
+                                //start
+                            } else if (type == 'i') {
+                                ikm.setKeyboard(mainMenu());
+                                send.setText("Ready to play? Press the \"Start\" button and let's get the dancing started!");
+                            }else{
+                                ikm.setKeyboard(mainMenu());
+                                send.setText("Ready to play? Press the \"Start\" button and let's get the dancing started!");
+                            }
                             break;
                     }
-
-
-
-
                 send.setChatId(id);
                 send.setReplyMarkup(ikm);
-
-                //send.setChatId(id);
-                //send.setText("PRESS- "+data);
-
                 try{
                     execute(send);
                 }catch (Exception e1){
