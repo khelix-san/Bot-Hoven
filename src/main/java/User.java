@@ -10,12 +10,12 @@ public class User {
     private boolean replaceChords;
 
     public User(long chatId){
-        this.chatId=chatId;
-        instrument="DEFAULT";
-        genre="DEFAULT";
-        chords=new ArrayList<String>();
-        tempo=-1;
-        replaceChords=false;
+        this.chatId = chatId;
+        instrument = "DEFAULT";
+        genre = "DEFAULT";
+        chords = new ArrayList<String>();
+        tempo = -1;
+        replaceChords = false;
     }
 
     public boolean isReplaceChords() {
