@@ -10,7 +10,7 @@ import org.staccato.Instruction;
 
 import javax.sound.midi.Instrument;
 
-
+public class Composer {
     static String text = "Ma comm è bella\n" +
             "sta campagnola\n" +
             "che belli cosce\n" +
@@ -57,6 +57,21 @@ import javax.sound.midi.Instrument;
         map_consonante.put("Dmin",new String[] {"D","F","A"});
         map_consonante.put("Gdom7",new String[] {"G","B","D","F"});
         map_consonante.put("Emaj",new String[] {"E","G#","B"});
+
+         //HashMap scelta altezza note
+        note_altezza.put(1,"132");
+        note_altezza.put(2,"423");
+        note_altezza.put(3,"567");
+        note_altezza.put(4, String.valueOf(ran.nextInt(999999)));
+
+        //HashMap note consonanti
+        note_consonanti.put("A",new String[]{"F#","F","E","D"});
+        note_consonanti.put("B",new String[]{"G#","Bb","F","E"});
+        note_consonanti.put("C",new String[]{"A","D#","G","D"});
+        note_consonanti.put("D",new String[]{"F","G","A","E"});
+        note_consonanti.put("E",new String[]{"C#","B","F","F#"});
+        note_consonanti.put("F",new String[]{"D#","A","G#","A#"});
+        note_consonanti.put("G",new String[]{"B","C","E","D"});
 
         int patternSize = patternLetters.length();
         int octaveSize = octave.length();
@@ -115,32 +130,6 @@ import javax.sound.midi.Instrument;
         return ran_accordo;
     }
     public static void main (String[] args){
-
-
-        //HashMap Armonie con note consonanti
-        map_consonante.put("Cmaj",new String[] {"C","E","G"});
-        map_consonante.put("Amin",new String[] {"A","C","E"});
-        map_consonante.put("Fmaj",new String[] {"F","A","C"});
-        map_consonante.put("Gmaj",new String[] {"G","B","D"});
-        map_consonante.put("Dmin",new String[] {"D","F","A"});
-        map_consonante.put("Gdom7",new String[] {"G","B","D","F"});
-        map_consonante.put("Emaj",new String[] {"E","G#","B"});
-
-        //HashMap scelta altezza note
-        note_altezza.put(1,"132");
-        note_altezza.put(2,"423");
-        note_altezza.put(3,"567");
-        note_altezza.put(4, String.valueOf(ran.nextInt(999999)));
-
-        //HashMap note consonanti
-        note_consonanti.put("A",new String[]{"F#","F","E","D"});
-        note_consonanti.put("B",new String[]{"G#","Bb","F","E"});
-        note_consonanti.put("C",new String[]{"A","D#","G","D"});
-        note_consonanti.put("D",new String[]{"F","G","A","E"});
-        note_consonanti.put("E",new String[]{"C#","B","F","F#"});
-        note_consonanti.put("F",new String[]{"D#","A","G#","A#"});
-        note_consonanti.put("G",new String[]{"B","C","E","D"});
-
         Player pl = new Player();
         hashmapMaker();
         printNoteMap(note);
