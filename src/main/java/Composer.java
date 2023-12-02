@@ -1,10 +1,18 @@
 
 import java.util.*;
+import java.util.regex.Pattern;
+
 import org.jfugue.player.Player;
 
+import javax.sound.midi.Instrument;
+
 public class Composer {
-    static String text = "oroscopo del giorno quindici maggio";
-    static String patternLetters = "aiou";
+    static String text = "Ma comm è bella\n" +
+            "sta campagnola\n" +
+            "che belli cosce\n" +
+            "che tene ‘a campagnola\n" +
+            "ha fatt ‘ammore\n";
+    static String patternLetters = "aeiou";
     static String word = "ABCDEF";
     static String octave = "345";
 
@@ -12,6 +20,7 @@ public class Composer {
     static ArrayList<String> duration = new ArrayList<>(Arrays.asList("WW","WHH","HHHH","WHQQ","HHQQQQ","HQQQQQQ","QQQQQQQQ","WHQII","WHIIII","HHQII"));
 
     static HashMap<String,String[]> map_consonante = new HashMap<String,String[]>();
+    static HashMap<String,String[]> next_best = new HashMap<String,String[]>();
 
  
 
@@ -21,6 +30,25 @@ public class Composer {
     static Random ran = new Random();
 
     public static void hashmapMaker(){
+
+        //HashMap Accordi consonanti
+        next_best.put("Cmaj",new String[] {"Gmaj","Amin"});
+        next_best.put("Amin",new String[] {"Fmaj","Dmin"});
+        next_best.put("Fmaj",new String[] {"Gmaj","Dmin"});
+        next_best.put("Gmaj",new String[] {"Emaj","Cmaj"});
+        next_best.put("Dmin",new String[] {"Gdom7","Amin"});
+        next_best.put("Gdom7",new String[] {"Cmaj","Emaj"});
+        next_best.put("Emaj",new String[] {"Fmaj","Gmaj"});
+
+        //HashMap Armonie con note consonanti
+        map_consonante.put("Cmaj",new String[] {"C","E","G"});
+        map_consonante.put("Amin",new String[] {"A","C","E"});
+        map_consonante.put("Fmaj",new String[] {"F","A","C"});
+        map_consonante.put("Gmaj",new String[] {"G","B","D"});
+        map_consonante.put("Dmin",new String[] {"D","F","A"});
+        map_consonante.put("Gdom7",new String[] {"G","B","D","F"});
+        map_consonante.put("Emaj",new String[] {"E","G#","B"});
+
         int patternSize = patternLetters.length();
         int octaveSize = octave.length();
         int notesSize = word.length();
@@ -29,8 +57,8 @@ public class Composer {
         for(int i=0;i<patternSize;i++)
             note.put(String.valueOf(patternLetters.charAt(i)),new ArrayList<String>());
 
-        for(int i=0;i< octaveSize*notesSize;i++){
-            if(i%7==0 && i!=0) {
+        for(int i=0;i < octaveSize*notesSize;i++){
+            if(i%6==0 && i!=0) {
                 ++currentOctave;
             }
 
@@ -57,49 +85,44 @@ public class Composer {
 
     public static void main (String[] args){
 
-        //HashMap Armonie con note consonanti
-        map_consonante.put("Cmaj",new String[] {"C","E","G"});
-        map_consonante.put("Amin",new String[] {"A","C","E"});
-        map_consonante.put("Fmaj",new String[] {"F","A","C"});
-        map_consonante.put("Gmaj",new String[] {"G","B","D"});
-        map_consonante.put("Dmin",new String[] {"D","F","A"});
-        map_consonante.put("Gdom7",new String[] {"G","B","D","F"});
-        map_consonante.put("Emaj",new String[] {"E","G#","B"});
-
         Player pl = new Player();
         hashmapMaker();
         printNoteMap(note);
 
         String music = "";
 
-        int a = 0;
         int n_note = ran.nextInt(duration.size());
         int j=0;
-        String accordo="";
+        String accordo=armonia.get(ran.nextInt(armonia.size()));
 
         for(int i=0;i<text.length();i++) {
             String c = text.charAt(i) + "";
 
             if (patternLetters.contains(c)) {
+            //if (true) {
                 if (j >= duration.get(n_note).length()) { //TERMINAZIONE BATTUTA
                     n_note = ran.nextInt(duration.size());
                     j = 0;
-                    music += "+";
-                    a = ran.nextInt(armonia.size());
+                    music += "R[15] &mp ";
                 }
-                if (j == 0)// INIZIO BATTUTA
-                    accordo = armonia.get(a);
+                if (j == 0) {// INIZIO BATTUTA
+                    accordo = next_best.get(accordo)[ran.nextInt(next_best.get(accordo).length)];
+                }
 
                 char d = duration.get(n_note).charAt(j); //prendo l'iesimo carattere dell'iesima scelta
                 //String nota = note.get((c)).get(ran.nextInt(note.get((c)).size()));
                 String nota = map_consonante.get(accordo)[ran.nextInt(map_consonante.get(accordo).length)] + octave.charAt(ran.nextInt(octave.length())); //nota presa dal hashmap map_consonante + ottava presa randomicamente dalla stringa di ottave
 
                 music += nota + d + accordo+ ((d=='H' || d=='W')?"":" ");
+                //music += nota + d + accordo+" ";
 
                 j++;
             }
         }
-        System.out.println(music);
-        pl.play(music.toString());
+
+        music = music.trim();
+        org.jfugue.pattern.Pattern pt = new org.jfugue.pattern.Pattern(music);
+        System.out.println(pt.toString());
+        pl.play(pt);
     }
 }
