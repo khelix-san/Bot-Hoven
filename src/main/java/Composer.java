@@ -11,6 +11,7 @@ import org.staccato.Instruction;
 import javax.sound.midi.Instrument;
 
 public class Composer{
+
     static String text = "Ma comm è bella\n" +
             "sta campagnola\n" +
             "che belli cosce\n" +
@@ -62,6 +63,21 @@ public class Composer{
         map_consonante.put("Dmin",new String[] {"D","F","A"});
         map_consonante.put("Gdom7",new String[] {"G","B","D","F"});
         map_consonante.put("Emaj",new String[] {"E","G#","B"});
+
+         //HashMap scelta altezza note
+        note_altezza.put(1,"132");
+        note_altezza.put(2,"423");
+        note_altezza.put(3,"567");
+        note_altezza.put(4, String.valueOf(ran.nextInt(999999)));
+
+        //HashMap note consonanti
+        note_consonanti.put("A",new String[]{"F#","F","E","D"});
+        note_consonanti.put("B",new String[]{"G#","Bb","F","E"});
+        note_consonanti.put("C",new String[]{"A","D#","G","D"});
+        note_consonanti.put("D",new String[]{"F","G","A","E"});
+        note_consonanti.put("E",new String[]{"C#","B","F","F#"});
+        note_consonanti.put("F",new String[]{"D#","A","G#","A#"});
+        note_consonanti.put("G",new String[]{"B","C","E","D"});
 
         int patternSize = patternLetters.length();
         int octaveSize = octave.length();
@@ -119,8 +135,6 @@ public class Composer{
 
         return ran_accordo;
     }
-
-
 
     public static String nota_succ(String note, String accordo){
         String[] note_accordo = map_consonante.get(accordo);
