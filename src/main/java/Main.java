@@ -14,12 +14,12 @@ import java.util.List;
 
 
 public class Main {
-
-    static class EchoBot extends TelegramLongPollingBot {
+     static class EchoBot extends TelegramLongPollingBot {
         @Override
         public String getBotToken(){
             return tgBot.getBotToken(); //Custom class to provide telegram bot token
         }
+
 
         public void print(String txt){
             System.out.println(txt);
@@ -30,6 +30,7 @@ public class Main {
           i:x -> strumento
           g:x -> genere
           a:x -> avanzate
+          n:x -> note level
           m:3   -> start
         */
         @Override
@@ -80,8 +81,12 @@ public class Main {
                             } else if (type == 'g') {
                                 ikm.setKeyboard(mainMenu());
                                 send.setText("Set the pop genre, continue to customize the composer or press the \"Start\" button to start playing!");
+                            }else if(type == 'a'){
+                                ikm.setKeyboard(octaveChoose());
+                                send.setText("Choose which octave you want to use in this composition");
                             }else {
-                                //battuta personalizzata
+                                ikm.setKeyboard(mainMenu());
+                                send.setText("Set the low notes! Get ready for spooky music! Continue to customize the composer or press the \"Start\" button to start playing!");
                             }
                             break;
                         case '1':
@@ -94,8 +99,12 @@ public class Main {
                             } else if (type == 'g') {
                                 ikm.setKeyboard(mainMenu());
                                 send.setText("Set the rock genre, continue to customize the composer or press the \"Start\" button to start playing!");
-                            }else{
-                                //tempo musicale personalizzato
+                            }else if (type == 'a'){
+                                send.setText("Set your pattern, remember the standard pattern is \"aeiou.\"");
+                                //prendi il messaggio dell'utente e salva in una variabile - creare metodo per prendere valore
+                            }else {
+                                ikm.setKeyboard(mainMenu());
+                                send.setText("Set the high notes! Get ready for music that will send you to heaven! Continue to customize the composer or press the \"Start\" button to start playing!");
                             }
                             break;
                         case '2':
@@ -105,23 +114,28 @@ public class Main {
                             } else if (type == 'i') {
                                 ikm.setKeyboard(mainMenu());
                                 send.setText("Set the flute instrument, continue to customize the composer or press the \"Start\" button to start playing!");
-                            } else if (type == 'g') {
+                            }else if (type == 'n'){
+                                ikm.setKeyboard(mainMenu());
+                                send.setText("Set the middle notes, continue to customize the composer or press the \"Start\" button to start playing!");
+                            }else {
                                 ikm.setKeyboard(mainMenu());
                                 send.setText("Ready to play? Press the \"Start\" button and let's get the dancing started!");
-                            }else{
-                                //custom pattern like "aeiou"
                             }
                             break;
                         case '3':
                             if( type == 'm'){
                                 //start
-                            } else if (type == 'i') {
+                            } else if (type == 'n') {
                                 ikm.setKeyboard(mainMenu());
-                                send.setText("Ready to play? Press the \"Start\" button and let's get the dancing started!");
+                                send.setText("Set the random notes, ready to discover your composition? Continue to customize the composer or press the \"Start\" button to start playing!");
                             }else{
                                 ikm.setKeyboard(mainMenu());
                                 send.setText("Ready to play? Press the \"Start\" button and let's get the dancing started!");
                             }
+                            break;
+                        case '4':
+                            ikm.setKeyboard(mainMenu());
+                            send.setText("Ready to play? Press the \"Start\" button and let's get the dancing started!");
                             break;
                     }
                 send.setChatId(id);
@@ -204,7 +218,6 @@ public class Main {
                 }
                 tmp.setText(in);
                 tmp.setCallbackData("i:"+String.valueOf(i));
-                //non so perche
                 if(i<2) buttons1.add(tmp);
                 else buttons2.add(tmp);
             }
@@ -239,7 +252,6 @@ public class Main {
                 }
                 tmp.setText(in);
                 tmp.setCallbackData("g:"+String.valueOf(i));
-                //non so perche
                 if (i<2) buttons1.add(tmp);
                 else buttons2.add(tmp);
             }
@@ -253,21 +265,18 @@ public class Main {
             List<InlineKeyboardButton> buttons1 = new ArrayList<>();
             List<InlineKeyboardButton> buttons2 = new ArrayList<>();
 
-            for(int i = 0; i < 4; i++){
+            for(int i = 0; i < 3; i++){
                 InlineKeyboardButton tmp = new InlineKeyboardButton();
                 String in = "";
 
                 switch (i){
                     case 0:
-                        in = "Custom arrangement";
+                        in = "Custom octave";
                         break;
                     case 1:
-                        in = "Custom musical tempo";
-                        break;
-                    case 2:
                         in = "Custom pattern";
                         break;
-                    case 3:
+                    case 2:
                         in = "Return";
                         break;
                     default:
@@ -275,7 +284,6 @@ public class Main {
                 }
                 tmp.setText(in);
                 tmp.setCallbackData("a:"+String.valueOf(i));
-                //non so perche
                 if (i<2) buttons1.add(tmp);
                 else buttons2.add(tmp);
             }
@@ -283,6 +291,45 @@ public class Main {
             inlineButtons.add(buttons2);
             return inlineButtons;
         }
+
+        private List<List<InlineKeyboardButton>> octaveChoose(){
+            List<List<InlineKeyboardButton>> inlineButtons = new ArrayList<>();
+            List<InlineKeyboardButton> buttons1 = new ArrayList<>();
+            List<InlineKeyboardButton> buttons2 = new ArrayList<>();
+
+            for(int i = 0; i < 5 ; i++){
+                InlineKeyboardButton tmp = new InlineKeyboardButton();
+                String in = "";
+
+                switch (i){
+                    case 0:
+                        in = "Low notes";
+                        break;
+                    case 1:
+                        in = "High notes";
+                        break;
+                    case 2:
+                        in = "Medium notes";
+                        break;
+                    case 3:
+                        in = "Random notes";
+                        break;
+                    case 4:
+                        in = "Return";
+                        break;
+                    default:
+                        break;
+                }
+                tmp.setText(in);
+                tmp.setCallbackData("n:"+String.valueOf(i));
+                if (i<2) buttons1.add(tmp);
+                else buttons2.add(tmp);
+            }
+            inlineButtons.add(buttons1);
+            inlineButtons.add(buttons2);
+            return inlineButtons;
+        }
+
 
         @Override
         public String getBotUsername() {

@@ -1,22 +1,17 @@
 
 import java.util.*;
 
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.regex.Pattern;
-
 
 import org.jfugue.player.Player;
-import org.staccato.Instruction;
-
-import javax.sound.midi.Instrument;
 
 public class Composer{
 
-    static String text = "Ma comm è bella\n" +
+    /*static String text = "Ma comm è bella\n" +
             "sta campagnola\n" +
             "che belli cosce\n" +
             "che tene ‘a campagnola\n" +
-            "ha fatt ‘ammore\n";
+            "ha fatt ‘ammore\n";*/
+    //Static String text =
     static String patternLetters = "aeiou";
     static String word = "ABCDEF";
     static String octave = "345";
@@ -27,9 +22,15 @@ public class Composer{
     static HashMap<String, String[]> note_consonanti = new HashMap<String, String[]>();
     static HashMap<String,String[]> next_best = new HashMap<String,String[]>();
     static  HashMap<String, ArrayList<String>> note = new HashMap<String, ArrayList<String>>();
+    static HashMap<String, String[]> genre_accord = new HashMap<String, String[]>();
+
     static Random ran = new Random();
 
     public static void hashmapMaker(){
+
+        //HashMap generi e accordi - da implementare
+        genre_accord.put("rock", new String[]{"Cmaj", "G7", "Dm7", "Csus4", "Asus2"}); //dovremmo aggiungere altre note nel hashmap consonanti
+        genre_accord.put("pop", new String[]{"Cmaj", "Amin", "Fmaj", "Gmaj", "Dmin"});
 
         //HashMap scelta altezza note
         note_altezza.put(1,"132");
@@ -64,20 +65,6 @@ public class Composer{
         map_consonante.put("Gdom7",new String[] {"G","B","D","F"});
         map_consonante.put("Emaj",new String[] {"E","G#","B"});
 
-         //HashMap scelta altezza note
-        note_altezza.put(1,"132");
-        note_altezza.put(2,"423");
-        note_altezza.put(3,"567");
-        note_altezza.put(4, String.valueOf(ran.nextInt(999999)));
-
-        //HashMap note consonanti
-        note_consonanti.put("A",new String[]{"F#","F","E","D"});
-        note_consonanti.put("B",new String[]{"G#","Bb","F","E"});
-        note_consonanti.put("C",new String[]{"A","D#","G","D"});
-        note_consonanti.put("D",new String[]{"F","G","A","E"});
-        note_consonanti.put("E",new String[]{"C#","B","F","F#"});
-        note_consonanti.put("F",new String[]{"D#","A","G#","A#"});
-        note_consonanti.put("G",new String[]{"B","C","E","D"});
 
         int patternSize = patternLetters.length();
         int octaveSize = octave.length();
@@ -160,7 +147,11 @@ public class Composer{
         String music = "I["+instrument+"] "; //inizializzazione pattern musicale con strumento (scelto dall'utente)
         int n_note = ran.nextInt(duration.size());
         int j=0;
-
+        /*-------------------INPUT---------------------------*/
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Inserisci un testo per comporre la musica");
+        String text = sc.nextLine();
+        /*-----------------------------------------------------------*/
         String tmp = randur(duration.get(n_note));
 
         String accordo=armonia.get(ran.nextInt(armonia.size()));
