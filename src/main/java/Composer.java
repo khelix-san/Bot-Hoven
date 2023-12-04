@@ -6,12 +6,11 @@ import org.jfugue.player.Player;
 
 public class Composer{
 
-    /*static String text = "Ma comm è bella\n" +
+    static String text = "Ma comm è bella\n" +
             "sta campagnola\n" +
             "che belli cosce\n" +
             "che tene ‘a campagnola\n" +
-            "ha fatt ‘ammore\n";*/
-    //Static String text =
+            "ha fatt ‘ammore\n";
     static String patternLetters = "aeiou";
     static String word = "ABCDEF";
     static String octave = "345";
@@ -65,7 +64,7 @@ public class Composer{
         map_consonante.put("Gdom7",new String[] {"G","B","D","F"});
         map_consonante.put("Emaj",new String[] {"E","G#","B"});
 
-
+        /* |INUTILE|
         int patternSize = patternLetters.length();
         int octaveSize = octave.length();
         int notesSize = word.length();
@@ -85,6 +84,8 @@ public class Composer{
             tmp.add(word.charAt(i%notesSize)+""+currentOctave);
             note.put(String.valueOf(patternLetters.charAt(i%patternSize)),tmp);
         }
+
+        printNoteMap(note);*/
     }
 
     public static void printNoteMap(Map<String, ArrayList<String>> note) {
@@ -98,7 +99,7 @@ public class Composer{
             for (String value : values) {
                 System.out.print(value + " ");
             }
-            System.out.println(); // Move to the next line after printing values for a key
+            System.out.println();
         }
     }
 
@@ -110,15 +111,10 @@ public class Composer{
             accord2.add(accordo.charAt(i));
         }
 
-        int j = accord2.size();
-        int index = 0;
+        Collections.shuffle(accord2);
 
-        while ( j > 0){
-            index = ran.nextInt(j);
-            ran_accordo += accord2.get(index);
-            accord2.remove(index);
-            j--;
-        }
+        for(Character c : accord2)
+            ran_accordo+=c;
 
         return ran_accordo;
     }
@@ -126,6 +122,10 @@ public class Composer{
     public static String nota_succ(String note, String accordo){
         String[] note_accordo = map_consonante.get(accordo);
         String[] note_succs = note_consonanti.get(note.split("#")[0]);
+
+        Collections.shuffle(Arrays.asList(note_accordo));
+        Collections.shuffle(Arrays.asList(note_succs));
+
         for(String i : note_accordo){
             for(String j : note_succs){
                 if(j.contains(i)){
@@ -142,7 +142,6 @@ public class Composer{
 
         Player pl = new Player();
         hashmapMaker();
-        printNoteMap(note);
         String instrument = "Piano";
         String music = "I["+instrument+"] "; //inizializzazione pattern musicale con strumento (scelto dall'utente)
         int n_note = ran.nextInt(duration.size());
@@ -150,7 +149,7 @@ public class Composer{
         /*-------------------INPUT---------------------------*/
         Scanner sc = new Scanner(System.in);
         System.out.println("Inserisci un testo per comporre la musica");
-        String text = sc.nextLine();
+        //String text = sc.nextLine();
         /*-----------------------------------------------------------*/
         String tmp = randur(duration.get(n_note));
 
