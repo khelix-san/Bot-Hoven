@@ -175,7 +175,7 @@ public class Composer{
         org.jfugue.pattern.Pattern pt = new org.jfugue.pattern.Pattern(music);
         System.out.println(pt.toString());
         //salvataggio file formato MIDI
-        String address = "C:\\Users\\erric\\Desktop\\example";
+        String address = "example";
         try {
             // Get the MIDI sequence from the player
             Sequence sequence = pl.getSequence((PatternProducer) pt);
