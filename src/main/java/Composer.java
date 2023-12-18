@@ -1,8 +1,16 @@
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
-
+import org.jfugue.pattern.PatternProducer;
 import org.jfugue.player.Player;
+
+
+import javax.sound.midi.*;
+import javax.sound.sampled.*;
+
 
 public class Composer{
 
@@ -125,7 +133,7 @@ public class Composer{
     }
 
 
-    public static void main (String[] args){
+    public static void compose (String text){
 
         Player pl = new Player();
         hashmapMaker();
@@ -134,11 +142,7 @@ public class Composer{
         int n_note = ran.nextInt(duration.size());
         int j=0;
         int oct=3; //cambia per cambiare ottava
-        /*-------------------INPUT---------------------------*/
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Inserisci un testo per comporre la musica");
-        //String text = sc.nextLine();
-        /*-----------------------------------------------------------*/
+
         String tmp = randur(duration.get(n_note));
 
         String accordo=armonia.get(ran.nextInt(armonia.size()));
@@ -157,6 +161,7 @@ public class Composer{
                     accordo = next_best.get(accordo)[ran.nextInt(next_best.get(accordo).length)];
                 }
 
+
                 char d = tmp.charAt(j); //prendo l'iesimo carattere dell'iesima scelta
                 String componente_musica = nota + note_altezza.get(oct).charAt(ran.nextInt(note_altezza.get(oct).length()));
                 nota = nota_succ(nota,accordo);
@@ -166,10 +171,39 @@ public class Composer{
                 j++; //prossima armonia
             }
         }
-
         music = music.trim();
         org.jfugue.pattern.Pattern pt = new org.jfugue.pattern.Pattern(music);
         System.out.println(pt.toString());
+        //salvataggio file formato MIDI
+        String address = "C:\\Users\\erric\\Desktop\\example";
+        try {
+            // Get the MIDI sequence from the player
+            Sequence sequence = pl.getSequence((PatternProducer) pt);
+
+            // Save the sequence to a MIDI file
+            File midiFile = new File(address+".mid");
+            MidiSystem.write(sequence, 1, midiFile);
+
+            System.out.println("MIDI file saved successfully.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Sequence sequence = loadMidiFile(address+".mid");
+        //esecuzione
         pl.play(pt);
+    }
+
+    private static Sequence loadMidiFile(String filePath) {
+        try {
+            return MidiSystem.getSequence(new File(filePath));
+        } catch (InvalidMidiDataException | IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void main(String[] args){
+        Composer.compose(text);
     }
 }
