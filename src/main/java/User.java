@@ -1,40 +1,27 @@
 import java.util.ArrayList;
 
 public class User {
-    private long chatId;
-    private String instrument;
-    private String genre;
-    private String pattern;
-    private int tempo;
-    private ArrayList<String> chords;
-    private boolean replaceChords;
+    private String chatId, instrument, genre, pattern, text;
+    private int octave;
 
-    public User(long chatId){
+    public User(String chatId){
         this.chatId = chatId;
-        instrument = "DEFAULT";
+        instrument = "Piano";
         genre = "DEFAULT";
-        chords = new ArrayList<String>();
-        tempo = -1;
-        replaceChords = false;
+        text = "Fra’ Martino, campanaro,\n" +
+                "cosa fai? Non dormir!\n" +
+                "Suona il mattutino, suona il mattutino,\n" +
+                "din, don, dan, din, don, dan,\n" +
+                "suona il mattutino, din, don, dan!";
+        octave = 3;
+
     }
 
-    public boolean isReplaceChords() {
-        return replaceChords;
-    }
-
-    public void setReplaceChords(boolean replaceChords) {
-        this.replaceChords = replaceChords;
-    }
-
-    public void addChord(String s){
-        chords.add(s);
-    }
-
-    public long getChatId() {
+    public String getChatId() {
         return chatId;
     }
 
-    public void setChatId(long chatId) {
+    public void setChatId(String chatId) {
         this.chatId = chatId;
     }
 
@@ -62,19 +49,14 @@ public class User {
         this.pattern = pattern;
     }
 
-    public int getTempo() {
-        return tempo;
-    }
+    public void setOctave(int octave){this.octave = octave;}
 
-    public void setTempo(int tempo) {
-        this.tempo = tempo;
-    }
+    public int getOctave(){return octave;}
 
-    public ArrayList<String> getChords() {
-        return chords;
-    }
+    private String getText(){return text;}
 
-    public void setChords(ArrayList<String> chords) {
-        this.chords = chords;
-    }
+    private void setText(String text){this.text=text;}
+
+
+
 }
