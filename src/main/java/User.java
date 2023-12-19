@@ -8,11 +8,8 @@ public class User {
         this.chatId = chatId;
         instrument = "Piano";
         genre = "DEFAULT";
-        text = "Fra’ Martino, campanaro,\n" +
-                "cosa fai? Non dormir!\n" +
-                "Suona il mattutino, suona il mattutino,\n" +
-                "din, don, dan, din, don, dan,\n" +
-                "suona il mattutino, din, don, dan!";
+        pattern = "DEFAULT";
+        text = "";
         octave = 3;
 
     }
@@ -53,10 +50,20 @@ public class User {
 
     public int getOctave(){return octave;}
 
-    private String getText(){return text;}
+    public String getText(){return text;}
 
-    private void setText(String text){this.text=text;}
+    public void setText(String text){this.text=text;}
 
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "chatId='" + chatId + '\'' +
+                ", instrument='" + instrument + '\'' +
+                ", genre='" + genre + '\'' +
+                ", pattern='" + pattern + '\'' +
+                ", text='" + text + '\'' +
+                ", octave=" + octave +
+                '}';
+    }
 }

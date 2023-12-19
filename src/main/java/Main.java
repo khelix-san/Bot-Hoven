@@ -27,11 +27,6 @@ public class Main {
         }
 
 
-        public void print(String txt){
-            System.out.println(txt);
-        }
-
-
         /*m:x -> menu
           i:x -> strumento
           g:x -> genere
@@ -48,6 +43,7 @@ public class Main {
                 if(msg.equals("/start")){
                     if(!lista_user.containsKey(chatId)){
                         lista_user.put(chatId, new User(chatId));
+                        System.out.println("User aggiunto con chatId: "+chatId);
                     }
 
                     InlineKeyboardMarkup ikm= new InlineKeyboardMarkup();
@@ -66,16 +62,56 @@ public class Main {
                         e.printStackTrace();
                     }
                 }
+                else{
+                    User u;
+                    SendMessage sendMessage = new SendMessage();
+                    sendMessage.setChatId(chatId);
+                    if(lista_user.containsKey(chatId)){
+                        u=lista_user.get(chatId);
+
+                        System.out.println("PRE: "+u.toString());
+
+                        if(u.getPattern().equals("INSERT")){
+                            u.setPattern(msg);
+                            sendMessage.setText("Pattern saved!");
+                        } else if (u.getText().equals("INSERT")) {
+                            u.setText(msg);
+                            sendMessage.setText("Text saved!\n I'm processing the data you sent me, wait for result!");
+                            //Composer.compose(u.getText(),u.getPattern(),u.getGenre(),u.getOctave(),u.getInstrument());
+                            //Composer.compose(u);
+                        }
+                        else{
+                            sendMessage.setText("No configuration changed!");
+                        }
+
+                        InlineKeyboardMarkup ikm= new InlineKeyboardMarkup();
+                        ikm.setKeyboard(mainMenu());
+                        sendMessage.setReplyMarkup(ikm);
+
+                        System.out.println("POST: "+u.toString());
+
+                    }
+                    else {
+                        sendMessage.setText("ERROR, type /start to begin");
+                    }
+
+                    try{
+                        execute(sendMessage);
+                    }catch (TelegramApiException e){
+                        System.out.println("Errore");
+                        e.printStackTrace();
+                    }
+                }
             }
             else if(update.hasCallbackQuery()){
+                User u = lista_user.get(String.valueOf(update.getCallbackQuery().getMessage().getChatId()));
+
                 CallbackQuery cbQuery = update.getCallbackQuery();
                 String data = cbQuery.getData();
                 long id = cbQuery.getMessage().getChatId();
-                print(data);
                 //ricavo il menu
                 char type = data.split(":")[0].charAt(0);
                 char option = data.split(":")[1].charAt(0);
-                System.out.println(option);
                 InlineKeyboardMarkup ikm= new InlineKeyboardMarkup();
 
                 SendMessage send = new SendMessage();
@@ -88,11 +124,11 @@ public class Main {
                             } else if (type == 'i') {
                                 ikm.setKeyboard(mainMenu());
                                 send.setText("Set the piano instrument, continue to customize the composer or press the \"Start\" button to start playing!");
-                                //u.setInstrument("Piano");
+                                u.setInstrument("Piano");
                             } else if (type == 'g') {
                                 ikm.setKeyboard(mainMenu());
                                 send.setText("Set the pop genre, continue to customize the composer or press the \"Start\" button to start playing!");
-                                //u.setGenre("pop");
+                                u.setGenre("pop");
                             }else if(type == 'a'){
                                 ikm.setKeyboard(octaveChoose());
                                 send.setText("Choose which octave you want to use in this composition");
@@ -102,7 +138,7 @@ public class Main {
                             }else{
                                 ikm.setKeyboard(mainMenu());
                                 send.setText("Set the low notes! Get ready for spooky music! Continue to customize the composer or press the \"Start\" button to start playing!");
-                                //u.setOctave(1);
+                                u.setOctave(1);
                             }
                             break;
                         case '1':
@@ -112,21 +148,21 @@ public class Main {
                             } else if (type == 'i') {
                                 ikm.setKeyboard(mainMenu());
                                 send.setText("Set the guitar instrument, continue to customize the composer or press the \"Start\" button to start playing!");
-                                //u.setInstrument("Guitar");
+                                u.setInstrument("Guitar");
                             } else if (type == 'g') {
                                 ikm.setKeyboard(mainMenu());
                                 send.setText("Set the rock genre, continue to customize the composer or press the \"Start\" button to start playing!");
-                                //u.setGenre("rock");
+                                u.setGenre("rock");
                             }else if (type == 'a'){
                                 ikm.setKeyboard(onlyReturn());
                                 send.setText("Set your pattern, remember the standard pattern is \"aeiou.\"");
-                                //u.setPattern(update.getMessage().getText());
+                                u.setPattern("INSERT");
                                 //System.out.println(update.getMessage().getText());
                                 //prendi il messaggio dell'utente e salva in una variabile - creare metodo per prendere valore
                             }else {
                                 ikm.setKeyboard(mainMenu());
                                 send.setText("Set the high notes! Get ready for music that will send you to heaven! Continue to customize the composer or press the \"Start\" button to start playing!");
-                                //u.setOctave(4);
+                                u.setOctave(4);
                             }
                             break;
                         case '2':
@@ -136,11 +172,11 @@ public class Main {
                             } else if (type == 'i') {
                                 ikm.setKeyboard(mainMenu());
                                 send.setText("Set the flute instrument, continue to customize the composer or press the \"Start\" button to start playing!");
-                                //u.setInstrument("Flute");
+                                u.setInstrument("Flute");
                             }else if (type == 'n'){
                                 ikm.setKeyboard(mainMenu());
                                 send.setText("Set the middle notes, continue to customize the composer or press the \"Start\" button to start playing!");
-                                //u.setOctave(2);
+                                u.setOctave(2);
                             }else {
                                 ikm.setKeyboard(mainMenu());
                                 send.setText("Ready to play? Press the \"Start\" button and let's get the dancing started!");
@@ -150,17 +186,14 @@ public class Main {
                             if( type == 'm'){
                                 ikm.setKeyboard(onlyReturn());
                                 send.setText("Set the text from which to create your musical composition!");
-                                sendBotMessage(update.getMessage().getText(),update.getMessage().getChatId().toString());
-                                /*if(update.getMessage().getText().isEmpty() || update.getMessage().getText() == null){
-                                    ikm.setKeyboard(mainMenu());
-                                }*/
-                                //u.setText(update.getMessage().getText());
-                                //System.out.println(update.getMessage().getText());
+                                u.setText("INSERT");
+
+                                if(u.getPattern().equals("INSERT")) u.setPattern("DEFAULT");
                                 //start
                             } else if (type == 'n') {
                                 ikm.setKeyboard(mainMenu());
                                 send.setText("Set the random notes, ready to discover your composition? Continue to customize the composer or press the \"Start\" button to start playing!");
-                                //u.setOctave(5);
+                                u.setOctave(5);
                             }else{
                                 ikm.setKeyboard(mainMenu());
                                 send.setText("Ready to play? Press the \"Start\" button and let's get the dancing started!");
