@@ -39,7 +39,7 @@ public class Main {
                 if(msg.equals("/start")){
                     if(!lista_user.containsKey(chatId)){
                         lista_user.put(chatId, new User(chatId));
-                        System.out.println("User aggiunto con chatId: "+chatId);
+                        System.out.println("User aggiunto con chatId: "+ chatId);
                     }
 
                     InlineKeyboardMarkup ikm= new InlineKeyboardMarkup();
@@ -150,7 +150,7 @@ public class Main {
                                 u.setGenre("rock");
                             }else if (type == 'a'){
                                 ikm.setKeyboard(onlyReturn());
-                                send.setText("Set your pattern, remember the standard pattern is \"aeiou.\"");
+                                send.setText("Set your pattern, remember the current pattern is \""+u.getPattern()+"\"");
                                 u.setPattern("INSERT");
                                 //System.out.println(update.getMessage().getText());
                                 //prendi il messaggio dell'utente e salva in una variabile - creare metodo per prendere valore
