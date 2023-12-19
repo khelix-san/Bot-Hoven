@@ -1,15 +1,15 @@
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
+import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +41,7 @@ public class Main {
                 String chatId = update.getMessage().getChatId().toString();
 
                 if(msg.equals("/start")){
+
                     if(!lista_user.containsKey(chatId)){
                         lista_user.put(chatId, new User(chatId));
                         System.out.println("User aggiunto con chatId: "+chatId);
@@ -420,14 +421,28 @@ public class Main {
             return "Musimatic_bot";
         }
 
-        //funzione pappagallo
-        private SendMessage sendBotMessage(String text, String chatId){
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setChatId(chatId);
-            sendMessage.setText(text);
+        private SendDocument sendMp3(String chatId, String fileName,String caption) throws TelegramApiException {
 
-            return sendMessage;
+            InputFile file = new InputFile(new File(fileName),fileName);
+
+            SendDocument sendDocumentRequest = new SendDocument();
+            sendDocumentRequest.setChatId(chatId);
+            sendDocumentRequest.setDocument(file);
+            sendDocumentRequest.setCaption(caption);
+
+            return sendDocumentRequest;
         }
+
+        /*ESEMPIO USO SendDcoument()
+
+         try {
+                execute(sendMp3(chatId,"DEFINIRE PERCORSO(magari far salvare in resources)","Here is your"));
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
+            }
+
+            questo blocco va inserito nella funzione onUpdateReceived()
+         */
 
     }// END CLASSE BOT-----------------
 
