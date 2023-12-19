@@ -17,16 +17,12 @@ import java.util.Objects;
 
 
 public class Main {
-
-
     private static HashMap<String, User> lista_user = new HashMap<String,User>();
      static class EchoBot extends TelegramLongPollingBot {
         @Override
         public String getBotToken(){
             return tgBot.getBotToken(); //Custom class to provide telegram bot token
         }
-
-
         /*m:x -> menu
           i:x -> strumento
           g:x -> genere
@@ -77,8 +73,7 @@ public class Main {
                         } else if (u.getText().equals("INSERT")) {
                             u.setText(msg);
                             sendMessage.setText("Text saved!\n I'm processing the data you sent me, wait for result!");
-                            //Composer.compose(u.getText(),u.getPattern(),u.getGenre(),u.getOctave(),u.getInstrument());
-                            //Composer.compose(u);
+                            Composer.compose(u);
                         }
                         else{
                             sendMessage.setText("No configuration changed!");
