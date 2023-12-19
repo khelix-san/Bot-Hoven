@@ -17,16 +17,12 @@ import java.util.Objects;
 
 
 public class Main {
-
-
     private static HashMap<String, User> lista_user = new HashMap<String,User>();
      static class EchoBot extends TelegramLongPollingBot {
         @Override
         public String getBotToken(){
             return tgBot.getBotToken(); //Custom class to provide telegram bot token
         }
-
-
         /*m:x -> menu
           i:x -> strumento
           g:x -> genere
@@ -44,7 +40,7 @@ public class Main {
 
                     if(!lista_user.containsKey(chatId)){
                         lista_user.put(chatId, new User(chatId));
-                        System.out.println("User aggiunto con chatId: "+chatId);
+                        System.out.println("User aggiunto con chatId: "+ chatId);
                     }
 
                     InlineKeyboardMarkup ikm= new InlineKeyboardMarkup();
@@ -78,8 +74,7 @@ public class Main {
                         } else if (u.getText().equals("INSERT")) {
                             u.setText(msg);
                             sendMessage.setText("Text saved!\n I'm processing the data you sent me, wait for result!");
-                            //Composer.compose(u.getText(),u.getPattern(),u.getGenre(),u.getOctave(),u.getInstrument());
-                            //Composer.compose(u);
+                            Composer.compose(u);
                         }
                         else{
                             sendMessage.setText("No configuration changed!");
@@ -156,7 +151,7 @@ public class Main {
                                 u.setGenre("rock");
                             }else if (type == 'a'){
                                 ikm.setKeyboard(onlyReturn());
-                                send.setText("Set your pattern, remember the standard pattern is \"aeiou.\"");
+                                send.setText("Set your pattern, remember the current pattern is \""+u.getPattern()+"\"");
                                 u.setPattern("INSERT");
                                 //System.out.println(update.getMessage().getText());
                                 //prendi il messaggio dell'utente e salva in una variabile - creare metodo per prendere valore

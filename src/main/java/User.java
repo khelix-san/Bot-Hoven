@@ -8,7 +8,7 @@ public class User {
         this.chatId = chatId;
         instrument = "Piano";
         genre = "DEFAULT";
-        pattern = "DEFAULT";
+        pattern = "aeiou";
         text = "";
         octave = 3;
 
