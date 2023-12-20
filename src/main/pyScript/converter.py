@@ -4,7 +4,7 @@ import sys
 # Accessing command-line arguments
 arguments = sys.argv
 
-fileName = arguments[1]
+fileName = "src/main/fileOutput/"+arguments[1]
 
 try:
     os.system("timidity "+fileName+".mid -Ow -o "+fileName+".wav")

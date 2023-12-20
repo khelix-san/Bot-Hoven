@@ -32,7 +32,6 @@ public class Composer{
     static HashMap<String,String[]> next_best = new HashMap<String,String[]>();
     static HashMap<String,String[]> next_best_rock = new HashMap<String,String[]>();
     static HashMap<String,String[]> next_best_pop = new HashMap<String,String[]>();
-    static  HashMap<String, ArrayList<String>> note = new HashMap<String, ArrayList<String>>();
     static HashMap<String, String[]> genre_accord = new HashMap<String, String[]>();
     static Random ran = new Random();
     public static void hashmapMaker(){
@@ -119,20 +118,7 @@ public class Composer{
         }
         return armonia;
     }
-    public static void printNoteMap(Map<String, ArrayList<String>> note) {
-        Map<String, ArrayList<String>> sortedNote = new TreeMap<>(note);
 
-        for (Map.Entry<String, ArrayList<String>> entry : sortedNote.entrySet()) {
-            String key = entry.getKey();
-            ArrayList<String> values = entry.getValue();
-
-            System.out.print("Key: " + key + ", Values: ");
-            for (String value : values) {
-                System.out.print(value + " ");
-            }
-            System.out.println();
-        }
-    }
     public static String randur(String accordo){
         ArrayList<Character> accord2= new ArrayList<Character>();
         String ran_accordo ="";
@@ -218,7 +204,7 @@ public class Composer{
             Sequence sequence = pl.getSequence((PatternProducer) pt);
 
             // Save the sequence to a MIDI file
-            File midiFile = new File(address+".mid");
+            File midiFile = new File("src/main/fileOutput/"+address+".mid");
             MidiSystem.write(sequence, 1, midiFile);
 
             System.out.println("MIDI file saved successfully.");
@@ -226,20 +212,8 @@ public class Composer{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Sequence sequence = loadMidiFile(address+".mid");
-        //esecuzione
-        pl.play(pt);
-    }
-    private static Sequence loadMidiFile(String filePath) {
-        try {
-            return MidiSystem.getSequence(new File(filePath));
-        } catch (InvalidMidiDataException | IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+
+        //pl.play(pt);
     }
 
-    /*public static void main(String[] args){
-        Composer.compose(text);
-    }*/
 }
