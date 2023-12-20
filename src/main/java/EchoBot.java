@@ -70,7 +70,9 @@ public class EchoBot extends TelegramLongPollingBot {
                         sendMessage.setText("Pattern saved!");
                     } else if (u.getText().equals("INSERT")) {
                         u.setText(msg);
-                        sendMessage.setText("Text saved!\n I'm processing the data you sent me, wait for result!");
+                        sendMessage.setText("What a musical composition! \n" +
+                                "I think I have found the next Mozart!\n" +
+                                "If you have more in mind, keep using the composer!");
                         Composer.compose(u);
 
                         String command = "python3 src/main/pyScript/converter.py "+chatId;
@@ -79,7 +81,7 @@ public class EchoBot extends TelegramLongPollingBot {
                             Process process = Runtime.getRuntime().exec(command);
                             process.waitFor();
 
-                            execute(sendMp3(chatId,"src/main/fileOutput/"+chatId+".mp3","Here is your song"));
+                            execute(sendMp3(chatId,"src/main/fileOutput/"+chatId+".mp3",""));
 
                             command="rm src/main/fileOutput/"+chatId+".mp3";
 
@@ -184,7 +186,14 @@ public class EchoBot extends TelegramLongPollingBot {
                         ikm.setKeyboard(mainMenu());
                         send.setText("Set the middle notes, continue to customize the composer or press the \"Start\" button to start playing!");
                         u.setOctave(2);
-                    }else {
+                    }else if (type == 'a'){
+                        ikm.setKeyboard(mainMenu());
+                        String user_id = u.getChatId();
+                        lista_user.remove(user_id);
+                        lista_user.put(user_id,new User(user_id));
+                        send.setText("We've done a good cleaning, haven't we?\n" +
+                                "Let's get back to composing new music! Remember that now the bot has restored all its standard values!");
+                    }else{
                         ikm.setKeyboard(mainMenu());
                         send.setText("Ready to play? Press the \"Start\" button and let's get the dancing started!");
                     }
@@ -194,10 +203,8 @@ public class EchoBot extends TelegramLongPollingBot {
                         ikm.setKeyboard(onlyReturn());
                         send.setText("Set the text from which to create your musical composition!");
                         u.setText("INSERT");
-
                         if(u.getPattern().equals("INSERT")) u.setPattern("DEFAULT");
-                        //start
-                    } else if (type == 'n') {
+                    } else if (type == 'n'){
                         ikm.setKeyboard(mainMenu());
                         send.setText("Set the random notes, ready to discover your composition? Continue to customize the composer or press the \"Start\" button to start playing!");
                         u.setOctave(5);
@@ -356,7 +363,7 @@ public class EchoBot extends TelegramLongPollingBot {
         List<InlineKeyboardButton> buttons1 = new ArrayList<>();
         List<InlineKeyboardButton> buttons2 = new ArrayList<>();
 
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < 4; i++){
             InlineKeyboardButton tmp = new InlineKeyboardButton();
             String in = "";
 
@@ -368,6 +375,9 @@ public class EchoBot extends TelegramLongPollingBot {
                     in = "Custom pattern";
                     break;
                 case 2:
+                    in = "Reset";
+                    break;
+                case 3:
                     in = "Return";
                     break;
                 default:
@@ -387,7 +397,6 @@ public class EchoBot extends TelegramLongPollingBot {
         List<List<InlineKeyboardButton>> inlineButtons = new ArrayList<>();
         List<InlineKeyboardButton> buttons1 = new ArrayList<>();
         List<InlineKeyboardButton> buttons2 = new ArrayList<>();
-
         for(int i = 0; i < 5 ; i++){
             InlineKeyboardButton tmp = new InlineKeyboardButton();
             String in = "";
